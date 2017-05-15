@@ -45,6 +45,11 @@ public class YstrController {
 		return searchFormSession.toForm();
 	}
 	
+	@RequestMapping(value = "/")
+	public String home(RedirectAttributes redirectAttributes) {
+		return "redirect:/search";
+	}
+	
 	@RequestMapping(value = "/search")
 	public String search(SearchForm searchForm) {
 		return "greeting";
