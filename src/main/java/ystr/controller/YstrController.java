@@ -27,10 +27,6 @@ import ystr.searchForm.SearchForm;
 @Controller
 public class YstrController {
 	
-	/* =============================================================== *
-	 *        STARTS FROM HERE. ABOVE ARE JUST FOR TEST                *
-	 * =============================================================== */
-	
 	@Autowired PersonRepository personRep;
 	@Autowired Session template;
 	
@@ -78,7 +74,7 @@ public class YstrController {
 		parameterValues.put("DYS447", searchForm.getDys447());
 		parameterValues.put("DYS449", searchForm.getDys449());
 		
-		String query = constructQuery(parameterValues);		
+		String query = constructQuery(parameterValues);
 		final Map<String, String> paramsQuery = removeNullParams(parameterValues);
 		int hapCount = runNeoQuery(query, paramsQuery);
 

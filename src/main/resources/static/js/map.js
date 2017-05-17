@@ -1,5 +1,5 @@
 var map, heatmap;
-var locations;
+var locations = [];
 mapLoading();
 function mapLoading () {
 	//event.preventDefault();
@@ -29,7 +29,6 @@ function mapLoading () {
 
 function initMap() {
 	var center = new google.maps.LatLng(20.5074, 0.1278);
-	console.log(locations);
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 2,
       center: center,
