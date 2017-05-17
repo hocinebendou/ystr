@@ -48,14 +48,14 @@ public class YstrController {
 	
 	@RequestMapping(value = "/search")
 	public String search(SearchForm searchForm) {
-		return "greeting";
+		return "searchPage";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchHaplotypes(@Valid SearchForm searchForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
 		if(bindingResult.hasErrors()){
-			return "greeting";
+			return "searchPage";
 		}
 		
 		searchFormSession.saveForm(searchForm);

@@ -23,7 +23,7 @@
 		<div class="toggle-nav">
         	<div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
         </div>
-        <a href="index.html" class="logo">Ystr <span class="lite">Haplotypes</span></a>
+        <a th:href="@{/}" class="logo">Ystr <span class="lite">Haplotypes</span></a>
         
         <div class="nav search-row" id="top_menu">
             <!--  search form start -->
@@ -53,15 +53,15 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.html">
+                      <a class="" th:href="@{/}">
                           <i class="icon_house_alt"></i>
-                          <span>Y-filter</span>
+                          <span>Home</span>
                       </a>
                   </li>
 				  <li class="sub-menu">
-                      <a class="" href="index.html">
+                      <a class="" th:href="@{/search}">
                           <i class="icon_loading"></i>
-                          <span>News</span>
+                          <span>Y-filter</span>
                       </a>
                   </li>       
               </ul>

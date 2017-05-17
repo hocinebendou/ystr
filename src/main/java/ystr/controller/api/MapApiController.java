@@ -34,11 +34,6 @@ public class MapApiController {
 	public List<Map<String, Double>> mapCountHaplotypes(@PathVariable String searchType, @MatrixVariable Map<String, String> keywords) {
 		
 		String query = constructQuery(keywords);
-
-		System.out.println("-----------------------");
-		System.out.println("-----------------------");
-		System.out.println(keywords);
-		System.out.println("-----------------------");
 		Map<String, String> paramsQuery = new HashMap<>();
 		Collection<Country> countries = runNeoQuery(query, paramsQuery);
 		List<Map<String, Double>> countHaplotypes = new ArrayList<>();
