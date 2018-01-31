@@ -80,7 +80,7 @@ public class YstrController {
 
 		int totalCount = personRep.countPersons();
 		int matchPerObserved = hapCount == 0 ? totalCount : (int)totalCount/hapCount;
-		int matchPerExpected = (int)(totalCount)/(hapCount + 1);
+		int matchPerExpected = (int)(totalCount + 1)/(hapCount + 1);
 		List<Integer> ciObserved = confidenceInterval(hapCount, totalCount, true);
 		List<Integer> ciExpected = confidenceInterval(hapCount, totalCount, false);
 		

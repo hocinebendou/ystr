@@ -1,9 +1,10 @@
 # Compute confidence interval
 
 ciproportion <- function(haplocount, totalcount, observed=TRUE) {
-
-    matchperobserved <-  totalcount %/% haplocount
-    if(observed == FALSE && haplocount == 0) {
+    if (haplocount > 0) {
+        matchperobserved <-  totalcount %/% haplocount
+    }
+    if(haplocount == 0) {
         matchperobserved <- (totalcount + 1) %/% (haplocount + 1)
     }
     pbar <- 1 / matchperobserved
