@@ -4,18 +4,21 @@ mapLoading();
 function mapLoading () {
 	//event.preventDefault();
 	var keywords = null;
-	$('input[id^="dys"]').each(function( index ) {
+	$('select[id^="dys"]').each(function( index ) {
 		var id = $(this).attr("id");
 		var val = $(this).val();
+		// only the first value with ',' is sent via api in keywords => replace it with '_'
+		val = val.replace(",", "_");
 		if (val.trim())
 			if (index === 0) {
 				keywords = id + "=" + val;
 			} else {
-				keywords = keywords + ";" + id + "=" + val;
+                keywords = keywords + ";" + id + "=" + val;
 			}
 	});
 	
 	if (keywords) {
+	    console.log(keywords);
 		$.get("/api/map/mixed;" + keywords, function(data){
 			if(!$.isEmptyObject(data)){
 				locations = data;

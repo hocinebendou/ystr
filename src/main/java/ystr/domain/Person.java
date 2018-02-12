@@ -20,8 +20,8 @@ public class Person {
 	
 	public Person(String name) { this.name = name; }
 	
-	@Relationship(type="HAS_LOCUS_DYS710")
-	private DYS710 locusDYS710 = new DYS710();
+//	@Relationship(type="HAS_LOCUS_DYS710")
+//	private DYS710 locusDYS710 = new DYS710();
 	
 	public Long getId() { return id; }
 	

@@ -1,0 +1,9 @@
+.locus-input {
+    margin-left:5rem !important;
+    display: block;
+    color: black;
+}
+
+select.ystr_val {
+    width: 100px;
+}

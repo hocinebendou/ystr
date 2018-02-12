@@ -1,9 +1,6 @@
 package ystr.controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.validation.Valid;
 
@@ -14,22 +11,59 @@ import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ystr.repositories.PersonRepository;
+import ystr.domain.*;
+import ystr.repositories.*;
 import ystr.searchForm.SearchFormSession;
 import ystr.searchForm.SearchForm;
 
 @Controller
 public class YstrController {
 	
-	@Autowired PersonRepository personRep;
-	@Autowired Session template;
-	
+	@Autowired
+    private PersonRepository personRep;
+	@Autowired
+    private Session template;
+
+	@Autowired
+    private DYS710Repository dys710Repository;
+
+    @Autowired
+    private DYS518Repository dys518Repository;
+
+    @Autowired
+    private DYS385aRepository dys385aRepository;
+
+    @Autowired
+    private DYS385bRepository dys385bRepository;
+
+    @Autowired
+    private DYS644Repository dys644Repository;
+
+    @Autowired
+    private DYS612Repository dys612Repository;
+
+    @Autowired
+    private DYS626Repository dys626Repository;
+
+    @Autowired
+    private DYS504Repository dys504Repository;
+
+    @Autowired
+    private DYS481Repository dys481Repository;
+
+    @Autowired
+    private DYS447Repository dys447Repository;
+
+    @Autowired
+    private DYS449Repository dys449Repository;
+
 	private SearchFormSession searchFormSession;
 	@Autowired
 	public YstrController(SearchFormSession searchFormSession) {
@@ -47,7 +81,32 @@ public class YstrController {
 	}
 	
 	@RequestMapping(value = "/search")
-	public String search(SearchForm searchForm) {
+	public String search(SearchForm searchForm, Model model) {
+
+        Collection<DYS710> dys710s = dys710Repository.findAll();
+        Collection<DYS518> dys518s = dys518Repository.findAll();
+        Collection<DYS385a> dys385as = dys385aRepository.findAll();
+        Collection<DYS385b> dys385bs = dys385bRepository.findAll();
+        Collection<DYS644> dys644s = dys644Repository.findAll();
+        Collection<DYS612> dys612s = dys612Repository.findAll();
+        Collection<DYS626> dys626s = dys626Repository.findAll();
+        Collection<DYS504> dys504s = dys504Repository.findAll();
+        Collection<DYS481> dys481s = dys481Repository.findAll();
+        Collection<DYS447> dys447s = dys447Repository.findAll();
+        Collection<DYS449> dys449s = dys449Repository.findAll();
+
+        model.addAttribute("dys710s", dys710s);
+        model.addAttribute("dys518s", dys518s);
+        model.addAttribute("dys385as", dys385as);
+        model.addAttribute("dys385bs", dys385bs);
+        model.addAttribute("dys644s", dys644s);
+        model.addAttribute("dys612s", dys612s);
+        model.addAttribute("dys626s", dys626s);
+        model.addAttribute("dys504s", dys504s);
+        model.addAttribute("dys481s", dys481s);
+        model.addAttribute("dys447s", dys447s);
+        model.addAttribute("dys449s", dys449s);
+
 		return "searchPage";
 	}
 	
@@ -73,7 +132,7 @@ public class YstrController {
 		parameterValues.put("DYS481", searchForm.getDys481());
 		parameterValues.put("DYS447", searchForm.getDys447());
 		parameterValues.put("DYS449", searchForm.getDys449());
-		
+
 		String query = constructQuery(parameterValues);
 		final Map<String, String> paramsQuery = removeNullParams(parameterValues);
 		int hapCount = runNeoQuery(query, paramsQuery);

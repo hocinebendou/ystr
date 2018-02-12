@@ -17,18 +17,18 @@ public class DYS710 {
 	@GraphId
 	private Long id;
 	
-	private int val;
+	private String val;
 	
 	public DYS710() {}
 	
-	public DYS710(int val) { this.val = val; }
+	public DYS710(String val) { this.val = val; }
 	
 	@Relationship(type = "HAS_LOCUS_DYS710", direction = Relationship.INCOMING)
 	private List<Person> persons = new ArrayList<>();
 	
 	public Long getId() { return id; }
 	
-	public int getVal() { return val; }
+	public String getVal() { return val; }
 	
-	public void setVal( int val ) { this.val = val; }
+	public void setVal( String val ) { this.val = val; }
 }

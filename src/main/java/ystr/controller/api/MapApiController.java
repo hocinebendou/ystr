@@ -58,9 +58,14 @@ public class MapApiController {
 		String querySecondPart = "";
 		int i = 1;
 		for (Map.Entry<String, String> entry : keywords.entrySet()) {
-			if(entry.getValue() != "") {
+			String val = entry.getValue();
+			if(!val.equals("")) {
+				// if val has '_' replace it with ','. Ex: 24.2_25.2 becomes 24.2,25.2 as saved in the DB.
+				if (val.indexOf('_') != -1)
+					val = val.replace('_', ',');
+
 				queryFirstPart += "MATCH (y" + i + ":" + entry.getKey().substring(0, 3).toUpperCase() + 
-						          entry.getKey().substring(3) + " " + "{val: '" + entry.getValue() + "'}) ";
+						          entry.getKey().substring(3) + " " + "{val: '" + val + "'}) ";
 				querySecondPart += (i == 1) ? "WHERE " : "AND ";
 				querySecondPart += "(p)-[:HAS_LOCUS_" + entry.getKey().substring(0, 3).toUpperCase() + 
 						           entry.getKey().substring(3) + "]->(y"+ i + ") ";

@@ -17,85 +17,102 @@
 	    		<div class="panel-heading">Haplotypes search</div>
 	    		<div class="panel-body" style="padding-bottom:50px;">
 	    		<form th:action="@{/search}" method="post" class="col-sm-12 form-horizontal" th:object="${searchForm}">
-	    			<div class="form-group block" style="margin-left:15px;display: block;">
+	    			<div class="form-group block" style="display: block;">
 	    				<label class="control-label" for="dys710" style="margin-top:5px;">DYS710</label>
-	    				<div>
+						<select class="ystr_val" id="dys710" th:field="${searchForm.dys710}">
+							<option value=""></option>
+							<option th:each="d : ${dys710s}" th:value="${d.val}" th:text="${d.val}"></option>
+						</select>
+	    				<!--<div>
 	      					<input type="text" class="form-control" id="dys710" name="dys710" value="0" th:field="${searchForm.dys710}" />
-	    				</div>
+	    				</div> -->
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys518" style="margin-top:5px;">DYS518</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys518" name="dys518" value="0" th:field="${searchForm.dys518}" />
-	    				</div>
+                        <select class="ystr_val" id="dys518" th:field="${searchForm.dys518}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys518s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys385a" style="margin-top:5px;">DYS385a</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys385a" name="dys385a" value="0" th:field="${searchForm.dys385a}" />
-	    				</div>
+                        <select class="ystr_val" id="dys385a" th:field="${searchForm.dys385a}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys385as}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys385b" style="margin-top:5px;">DYS385b</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys385b" name="dys385b" value="0" th:field="${searchForm.dys385b}" />
-	    				</div>
+                        <select class="ystr_val" id="dys385b" th:field="${searchForm.dys385b}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys385bs}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys644" style="margin-top:5px;">DYS644</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys644" name="dys644" value="0" th:field="${searchForm.dys644}" />
-	    				</div>
+                        <select class="ystr_val" id="dys644" th:field="${searchForm.dys644}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys644s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys612" style="margin-top:5px;">DYS612</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys612" name="dys612" value="0" th:field="${searchForm.dys612}" />
-	    				</div>
+                        <select class="ystr_val" id="dys612" th:field="${searchForm.dys612}">
+                            <option value="" selected="selected"></option>
+                            <option th:each="d : ${dys612s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys626" style="margin-top:5px;">DYS626</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys626" name="dys626" value="0" th:field="${searchForm.dys626}" />
-	    				</div>
+                        <select class="ystr_val" id="dys626" th:field="${searchForm.dys626}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys626s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys504" style="margin-top:5px;">DYS504</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys504" name="dys504" value="0" th:field="${searchForm.dys504}" />
-	    				</div>
+                        <select class="ystr_val" id="dys504" th:field="${searchForm.dys504}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys504s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys481" style="margin-top:5px;">DYS481</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys481" name="dys481" value="0" th:field="${searchForm.dys481}" />
-	    				</div>
+                        <select class="ystr_val" id="dys481" th:field="${searchForm.dys481}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys481s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys447" style="margin-top:5px;">DYS447</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys447" name="dys447" value="0" th:field="${searchForm.dys447}" />
-	    				</div>
+                        <select class="ystr_val" id="dys447" th:field="${searchForm.dys447}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys447s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					
-					<div class="form-group text-center block" style="margin-left:25px;display: block; color: black;">
+					<div class="form-group text-center block locus-input">
 	    				<label class="control-label" for="dys449" style="margin-top:5px;">DYS449</label>
-	    				<div>
-	      					<input type="text" class="form-control" id="dys449" name="dys449" value="0" th:field="${searchForm.dys449}" />
-	    				</div>
+                        <select class="ystr_val" id="dys449" th:field="${searchForm.dys449}">
+                            <option value=""></option>
+                            <option th:each="d : ${dys449s}" th:value="${d.val}" th:text="${d.val}"></option>
+                        </select>
 					</div>
 					<br/>
-					<div class="form-group" style="position:absolute;margin-top:70px;margin-left:10px;">
-						<button id="search-btn" class="btn btn-default btn-primary" type="submit">Search <i class="glyphicon glyphicon-chevron-right"></i></button>
+					<div class="form-group" style="position:absolute;margin-top:70px;margin-left:-10px;">
+						<button id="search-btn" class="btn btn-default btn-primary" type="submit">Search
+                            <i class="glyphicon glyphicon-chevron-right"></i></button>
+                        <button id="clear-btn" class="btn btn-default btn-danger">Clear
+                            <i class="glyphicon glyphicon-chevron-right"></i></button>
 					</div>
 	    		</form>
 	    		</div>

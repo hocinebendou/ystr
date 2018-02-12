@@ -19,7 +19,7 @@ public class SearchFormSession {
 	private String dys481;
 	private String dys447;
 	private String dys449;
-	
+
 	public void saveForm(SearchForm searchForm) {
 		this.dys710 = searchForm.getDys710();
 		this.dys518 = searchForm.getDys518();
