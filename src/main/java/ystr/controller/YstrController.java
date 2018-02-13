@@ -10,6 +10,7 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -82,18 +83,18 @@ public class YstrController {
 	
 	@RequestMapping(value = "/search")
 	public String search(SearchForm searchForm, Model model) {
-
-        Collection<DYS710> dys710s = dys710Repository.findAll();
-        Collection<DYS518> dys518s = dys518Repository.findAll();
-        Collection<DYS385a> dys385as = dys385aRepository.findAll();
-        Collection<DYS385b> dys385bs = dys385bRepository.findAll();
-        Collection<DYS644> dys644s = dys644Repository.findAll();
-        Collection<DYS612> dys612s = dys612Repository.findAll();
-        Collection<DYS626> dys626s = dys626Repository.findAll();
-        Collection<DYS504> dys504s = dys504Repository.findAll();
-        Collection<DYS481> dys481s = dys481Repository.findAll();
-        Collection<DYS447> dys447s = dys447Repository.findAll();
-        Collection<DYS449> dys449s = dys449Repository.findAll();
+        Sort sort = new Sort(Sort.Direction.ASC, "leftLimit");
+        Collection<DYS710> dys710s = dys710Repository.findAll(sort, 1);
+        Collection<DYS518> dys518s = dys518Repository.findAll(sort, 1);
+        Collection<DYS385a> dys385as = dys385aRepository.findAll(sort, 1);
+        Collection<DYS385b> dys385bs = dys385bRepository.findAll(sort, 1);
+        Collection<DYS644> dys644s = dys644Repository.findAll(sort, 1);
+        Collection<DYS612> dys612s = dys612Repository.findAll(sort, 1);
+        Collection<DYS626> dys626s = dys626Repository.findAll(sort, 1);
+        Collection<DYS504> dys504s = dys504Repository.findAll(sort, 1);
+        Collection<DYS481> dys481s = dys481Repository.findAll(sort, 1);
+        Collection<DYS447> dys447s = dys447Repository.findAll(sort, 1);
+        Collection<DYS449> dys449s = dys449Repository.findAll(sort, 1);
 
         model.addAttribute("dys710s", dys710s);
         model.addAttribute("dys518s", dys518s);

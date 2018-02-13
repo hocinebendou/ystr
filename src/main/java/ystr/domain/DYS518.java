@@ -19,9 +19,14 @@ public class DYS518 {
 
     private String val;
 
+    private float leftLimit;
+
     public DYS518() {}
 
-    public DYS518(String val) { this.val = val; }
+    public DYS518(String val, float leftLimit) {
+        this.val = val;
+        this.leftLimit = leftLimit;
+    }
 
     @Relationship(type = "HAS_LOCUS_DYS518", direction = Relationship.INCOMING)
     private List<Person> persons = new ArrayList<>();
@@ -30,5 +35,9 @@ public class DYS518 {
 
     public String getVal() { return val; }
 
+    public float getLeftLimit() { return leftLimit; }
+
     public void setVal( String val ) { this.val = val; }
+
+    public void setLeftLimit( float leftLimit ) { this.leftLimit = leftLimit; }
 }
