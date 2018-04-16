@@ -73,7 +73,7 @@ public class MapApiController {
 			}
 		}
 		query += queryFirstPart + querySecondPart + "WITH p ";
-		query += "MATCH (p) -[:FROM_COUNTRY]->(c:Country) ";
+		query += "MATCH (c:Country) -[:COUNTRY_PER]->(p) ";
 		query += "RETURN c";
 		return query;
 	}

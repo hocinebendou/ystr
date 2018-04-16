@@ -18,7 +18,6 @@ function mapLoading () {
 	});
 	
 	if (keywords) {
-	    console.log(keywords);
 		$.get("/api/map/mixed;" + keywords, function(data){
 			if(!$.isEmptyObject(data)){
 				locations = data;
