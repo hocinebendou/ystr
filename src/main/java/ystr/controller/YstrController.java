@@ -29,6 +29,7 @@ public class YstrController {
 	
 	@Autowired
     private PersonRepository personRep;
+
 	@Autowired
     private Session template;
 
@@ -64,6 +65,9 @@ public class YstrController {
 
     @Autowired
     private DYS449Repository dys449Repository;
+
+    @Autowired
+	private StatsRepository statsRepository;
 
 	private SearchFormSession searchFormSession;
 	@Autowired
@@ -143,11 +147,20 @@ public class YstrController {
 		int matchPerExpected = (int)(totalCount + 1)/(hapCount + 1);
 		List<Integer> ciObserved = confidenceInterval(hapCount, totalCount, true);
 		List<Integer> ciExpected = confidenceInterval(hapCount, totalCount, false);
-		
+
+		Stats stats = statsRepository.findAll().get(0);
+
+		int singletons = stats.getSingletons();
+		float alpha = (float)(singletons+1)/(totalCount+1);
+		int kappa = Math.round(1/(alpha/((totalCount + 1)/(hapCount+1))));
+
+		System.out.println(kappa);
+
 		redirectAttributes.addFlashAttribute("hc", hapCount);
 		redirectAttributes.addFlashAttribute("tc", totalCount);
 		redirectAttributes.addFlashAttribute("mpo", matchPerObserved);
 		redirectAttributes.addFlashAttribute("mpe", matchPerExpected);
+		redirectAttributes.addFlashAttribute("kappa", kappa);
 		if(!ciObserved.isEmpty()){
 			redirectAttributes.addFlashAttribute("cio1", ciObserved.get(0));
 			redirectAttributes.addFlashAttribute("cio2", ciObserved.get(1));

@@ -6,11 +6,40 @@ import org.springframework.data.repository.query.Param;
 
 import ystr.domain.Person;
 
+import java.util.Collection;
+
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long>{
-	
-	String query = "MATCH (n:Person) RETURN count(n)";
-	
-	@Query(query)
+
+	Collection<Person> findAll();
+
+	@Query("OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n1:DYS710) " +
+			"WITH collect(distinct n1) as c1 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n2:DYS518) " +
+			"WITH collect(distinct n2) + c1 as c2 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n3:DYS385a) " +
+			"WITH collect(distinct n3) + c2 as c3 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n4:DYS385b) " +
+			"WITH collect(distinct n4) + c3 as c4 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n5:DYS644) " +
+			"WITH collect(distinct n5) + c4 as c5 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n6:DYS612) " +
+			"WITH collect(distinct n6) + c5 as c6 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n7:DYS626) " +
+			"WITH collect(distinct n7) + c6 as c7 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n8:DYS504) " +
+			"WITH collect(distinct n8) + c7 as c8 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n9:DYS481) " +
+			"WITH collect(distinct n9) + c8 as c9 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n10:DYS447) " +
+			"WITH collect(distinct n10) + c9 as c10 " +
+			"OPTIONAL MATCH (p:Person{name: {personName}})-[]->(n11:DYS449) " +
+			"WITH collect(distinct n11) + c10 as c11 " +
+			"UNWIND c11 as nodes " +
+			"RETURN nodes.val")
+	Collection<String> haplotypeValues(@Param("personName") String personName);
+
+
+	@Query("MATCH (n:Person) RETURN count(n)")
 	int countPersons();
 	
 	@Query("MATCH (p:Person) " +

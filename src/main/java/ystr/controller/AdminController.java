@@ -1,5 +1,7 @@
 package ystr.controller;
 
+import org.neo4j.ogm.model.Result;
+import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,11 +9,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ystr.domain.*;
 import ystr.repositories.*;
 
-import java.util.Collection;
+import java.util.*;
 
 
 @Controller
 public class AdminController {
+
+    @Autowired
+    private Session template;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Autowired
     private DYS710Repository dys710Repository;
@@ -119,5 +127,28 @@ public class AdminController {
             return Float.parseFloat(val.split(",")[0]);
 
         return Float.parseFloat(val);
+    }
+
+    @RequestMapping(value = "/kappa", method = RequestMethod.POST)
+    public String countSingletons() {
+
+        Collection<Person> persons = personRepository.findAll();
+
+        int singletons = 0;
+        for (Person person : persons) {
+            List<String> haplo = new ArrayList(personRepository.haplotypeValues(person.getName()));
+            int count = personRepository.countYPerson(
+                    haplo.get(10), haplo.get(9), haplo.get(8), haplo.get(7), haplo.get(6),
+                    haplo.get(5), haplo.get(4), haplo.get(3), haplo.get(2), haplo.get(1), haplo.get(0));
+            if (count == 1)
+                singletons += 1;
+        }
+
+        Map<String, Integer> params = new HashMap<>();
+        params.put("singletons", singletons);
+        Result result = template.query("MERGE (s:Stats {singletons: {singletons}})", params);
+        System.out.println(result);
+
+        return "adminPage";
     }
 }
