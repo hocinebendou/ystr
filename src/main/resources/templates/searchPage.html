@@ -135,7 +135,8 @@
                             </div>
                             <div th:if="${hc} != null" class="col-md-10">
                                 <p th:if="${hc} &gt; 0">
-                                    <strong>Found <span th:text="${hc}">0</span> matches in
+                                    <span class="glyphicon glyphicon-play text-success" aria-hidden="true"></span>
+									<strong>Found <span th:text="${hc}">0</span> matches in
                                         <span th:text="${tc}">0</span> Haplotypes.
                                     </strong>
                                     This is approx. 1 match in <span th:text="${mpo}">0</span> Haplotypes
@@ -147,7 +148,7 @@
                             </div>
                             <div th:if="${hc} != null" class="col-md-2">
                                 <form id="more-infor" th:action="@{/moreinfo}" method="post" th:object="${searchForm}">
-                                    <button type="submit" class="btn btn-success">Success</button>
+                                    <button type="submit" class="btn btn-primary">More Info</button>
                                 </form>
                             </div>
 	   					</div>
@@ -158,14 +159,20 @@
                             <div th:if="${hc} == null">
                                 <p>No search</p>
                             </div>
-                            <div th:if="${hc} != null">
-                                <strong> (n + 1)/ (N +1).</strong>
-                                This is approx. 1 match in
-                                <span th:text="${mpe}">0</span> Haplotypes
-                                (95% CI: <span th:text="${cie1}">0</span> - <span th:text="${cie2}">0</span>)<br/>
+                            <div th:if="${hc} != null" class="col-md-10">
+                                <p>
+                                    <span class="glyphicon glyphicon-play text-success" aria-hidden="true"></span>
+                                    <strong> (n + 1)/ (N +1).</strong>
+                                    This is approx. 1 match in
+                                    <span th:text="${mpe}">0</span> Haplotypes
+                                    (95% CI: <span th:text="${cie1}">0</span> - <span th:text="${cie2}">0</span>)
+                                </p>
 
-								<strong>Kappa</strong>
-								This is approx. 1 match in <span th:text="${kappa}">0</span> Haplotypes
+								<p>
+                                    <span class="glyphicon glyphicon-play text-success" aria-hidden="true"></span>
+                                    <strong>Kappa</strong>
+								    This is approx. 1 match in <span th:text="${kappa}">0</span> Haplotypes
+                                </p>
                             </div>
 	   					</div>
 	   				</div>
