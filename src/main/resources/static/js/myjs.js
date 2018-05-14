@@ -7,4 +7,8 @@ $(function() {
             $(this).val("");
         });
     });
+
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
 });

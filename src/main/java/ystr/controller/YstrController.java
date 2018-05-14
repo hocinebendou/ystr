@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 import org.rosuda.REngine.REXPMismatchException;
@@ -114,7 +115,19 @@ public class YstrController {
 
 		return "searchPage";
 	}
-	
+
+    @RequestMapping(value = "/moreinfo", method = RequestMethod.POST)
+    public String moreInfoSearch(SearchForm searchForm, Model model) {
+        final Map<String, String> parameterValues = queryParameters(searchForm);
+        String query = constructQuery(parameterValues, false);
+        final Map<String, String> paramsQuery = removeNullParams(parameterValues);
+        Map<String, Integer> hapByEthnicity = runNeoQuery(query, paramsQuery);
+
+        model.addAttribute("hapByEthnicity", hapByEthnicity);
+
+        return "moreInfoPage";
+    }
+
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String searchHaplotypes(@Valid SearchForm searchForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
@@ -124,23 +137,10 @@ public class YstrController {
 		
 		searchFormSession.saveForm(searchForm);
 		
-		final Map<String, String> parameterValues = new LinkedHashMap<>();
-		
-		parameterValues.put("DYS710", searchForm.getDys710());
-		parameterValues.put("DYS518", searchForm.getDys518());
-		parameterValues.put("DYS385a", searchForm.getDys385a());
-		parameterValues.put("DYS385b", searchForm.getDys385b());
-		parameterValues.put("DYS644", searchForm.getDys644());
-		parameterValues.put("DYS612", searchForm.getDys612());
-		parameterValues.put("DYS626", searchForm.getDys626());
-		parameterValues.put("DYS504", searchForm.getDys504());
-		parameterValues.put("DYS481", searchForm.getDys481());
-		parameterValues.put("DYS447", searchForm.getDys447());
-		parameterValues.put("DYS449", searchForm.getDys449());
-
-		String query = constructQuery(parameterValues);
-		final Map<String, String> paramsQuery = removeNullParams(parameterValues);
-		int hapCount = runNeoQuery(query, paramsQuery);
+		final Map<String, String> parameterValues = queryParameters(searchForm);
+        String query = constructQuery(parameterValues, true);
+        final Map<String, String> paramsQuery = removeNullParams(parameterValues);
+		int hapCount = runNeoQueryCount(query, paramsQuery);
 
 		int totalCount = personRep.countPersons();
 		int matchPerObserved = hapCount == 0 ? totalCount : (int)totalCount/hapCount;
@@ -153,8 +153,6 @@ public class YstrController {
 		int singletons = stats.getSingletons();
 		float alpha = (float)(singletons+1)/(totalCount+1);
 		int kappa = Math.round(1/(alpha/((totalCount + 1)/(hapCount+1))));
-
-		System.out.println(kappa);
 
 		redirectAttributes.addFlashAttribute("hc", hapCount);
 		redirectAttributes.addFlashAttribute("tc", totalCount);
@@ -171,7 +169,25 @@ public class YstrController {
 		}
 		return "redirect:/search";
 	}
-	
+
+    private Map<String, String> queryParameters(SearchForm searchForm) {
+        final Map<String, String> parameterValues = new LinkedHashMap<>();
+
+        parameterValues.put("DYS710", searchForm.getDys710());
+        parameterValues.put("DYS518", searchForm.getDys518());
+        parameterValues.put("DYS385a", searchForm.getDys385a());
+        parameterValues.put("DYS385b", searchForm.getDys385b());
+        parameterValues.put("DYS644", searchForm.getDys644());
+        parameterValues.put("DYS612", searchForm.getDys612());
+        parameterValues.put("DYS626", searchForm.getDys626());
+        parameterValues.put("DYS504", searchForm.getDys504());
+        parameterValues.put("DYS481", searchForm.getDys481());
+        parameterValues.put("DYS447", searchForm.getDys447());
+        parameterValues.put("DYS449", searchForm.getDys449());
+
+        return parameterValues;
+    }
+
 	/**
 	 * Compute confidence interval for Haplotype proportion
 	 */
@@ -215,7 +231,7 @@ public class YstrController {
 	 * Construct query from @parameterValues and use it as entry
 	 * to query Neo4j.
 	 */
-	private String constructQuery(Map<String, String> parameterValues) {
+	private String constructQuery(Map<String, String> parameterValues, boolean count) {
 		String query = "";
 		String queryFirstPart = "MATCH (p:Person) ";
 		String querySecondPart = "";
@@ -230,18 +246,44 @@ public class YstrController {
 				i++;
 			}
 		}
-		query += queryFirstPart + querySecondPart + "RETURN count(p)";
+
+		query += queryFirstPart + querySecondPart;
+		if (count)
+		    query += "RETURN count(p)";
+		else
+		    query += "RETURN labels(p), p.ethnicity, count(*)";
+
 		return query;
 	}
-	
+
 	/**
 	 * Run dynamic Neo4j query. If the interface "PersonRepository.java" is used
 	 * the query should be static and final.  
 	 */
-	private int runNeoQuery(String query, Map<String, String> paramsQuery) {
+	private Map<String, Integer> runNeoQuery(String query, Map<String, String> paramsQuery) {
 		Result result = template.query(query, paramsQuery);
-		int countPersons = ((Long)result.iterator().next().get("count(p)")).intValue();
-		
-		return countPersons;
+
+		List<Map<String, Object>> mapHaplotypes = IteratorUtils.toList(result.iterator());
+
+		Map<String, Integer> hapByEthnicity = new HashMap<>();
+		for (Map<String, Object> i : mapHaplotypes) {
+			String ethnicity = null;
+			for (Map.Entry<String, Object> entry : i.entrySet()) {
+		        if (entry.getKey().equals("p.ethnicity")) {
+		            ethnicity = entry.getValue().toString();
+                } else if (entry.getKey().equals("count(*)")) {
+		            hapByEthnicity.put(ethnicity, ((Long)entry.getValue()).intValue());
+                }
+            }
+        }
+
+		return hapByEthnicity;
 	}
+
+    private int runNeoQueryCount(String query, Map<String, String> paramsQuery) {
+        Result result = template.query(query, paramsQuery);
+		int countPersons = ((Long)result.iterator().next().get("count(p)")).intValue();
+
+        return countPersons;
+    }
 }

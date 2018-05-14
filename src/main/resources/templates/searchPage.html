@@ -133,7 +133,7 @@
                             <div th:if="${hc} == null">
                                 <p>No search</p>
                             </div>
-                            <div th:if="${hc} != null">
+                            <div th:if="${hc} != null" class="col-md-10">
                                 <p th:if="${hc} &gt; 0">
                                     <strong>Found <span th:text="${hc}">0</span> matches in
                                         <span th:text="${tc}">0</span> Haplotypes.
@@ -144,6 +144,11 @@
                                 <p th:if="${hc} == 0">
                                     Found no match in <span th:text="${mpo}">0</span> Haplotypes
                                 </p>
+                            </div>
+                            <div th:if="${hc} != null" class="col-md-2">
+                                <form id="more-infor" th:action="@{/moreinfo}" method="post" th:object="${searchForm}">
+                                    <button type="submit" class="btn btn-success">Success</button>
+                                </form>
                             </div>
 	   					</div>
 	   				</div>

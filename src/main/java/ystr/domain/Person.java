@@ -15,18 +15,28 @@ public class Person {
 	private Long id;
 	
 	private String name;
+
+	private String ethnicity;
 	
 	public Person() {}
 	
 	public Person(String name) { this.name = name; }
 	
-//	@Relationship(type="HAS_LOCUS_DYS710")
-//	private DYS710 locusDYS710 = new DYS710();
-	
+	// @Relationship(type="HAS_LOCUS_DYS710")
+	// private DYS710 locusDYS710 = new DYS710();
+
+	@Relationship(type = "COUNTRY_PER", direction = Relationship.INCOMING)
+	private Country country = new Country();
+
+	@Relationship(type = "ORIGIN_PER", direction = Relationship.INCOMING)
+	private Origin origin = new Origin();
+
 	public Long getId() { return id; }
 	
 	public String getName() { return name; }
-	
+
+	public String getEthnicity() { return ethnicity; }
+
 	public void setName(String name) { this.name = name; }
 	
 }
