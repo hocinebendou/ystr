@@ -119,11 +119,14 @@ public class YstrController {
     @RequestMapping(value = "/moreinfo", method = RequestMethod.POST)
     public String moreInfoSearch(SearchForm searchForm, Model model) {
         final Map<String, String> parameterValues = queryParameters(searchForm);
-        String query = constructQuery(parameterValues, false);
+        String queryEthnicity = constructQuery(parameterValues, "ethnicity");
+        String queryCountry = constructQuery(parameterValues, "country");
         final Map<String, String> paramsQuery = removeNullParams(parameterValues);
-        Map<String, Integer> hapByEthnicity = runNeoQuery(query, paramsQuery);
+        Map<String, Integer> hapByEthnicity = runNeoQuery(queryEthnicity, paramsQuery);
+        Map<String, Integer> hapByCountry = runNeoQuery(queryCountry, paramsQuery);
 
         model.addAttribute("hapByEthnicity", hapByEthnicity);
+        model.addAttribute("hapByCountry", hapByCountry);
 
         return "moreInfoPage";
     }
@@ -138,7 +141,7 @@ public class YstrController {
 		searchFormSession.saveForm(searchForm);
 		
 		final Map<String, String> parameterValues = queryParameters(searchForm);
-        String query = constructQuery(parameterValues, true);
+        String query = constructQuery(parameterValues, "count");
         final Map<String, String> paramsQuery = removeNullParams(parameterValues);
 		int hapCount = runNeoQueryCount(query, paramsQuery);
 
@@ -231,13 +234,13 @@ public class YstrController {
 	 * Construct query from @parameterValues and use it as entry
 	 * to query Neo4j.
 	 */
-	private String constructQuery(Map<String, String> parameterValues, boolean count) {
+	private String constructQuery(Map<String, String> parameterValues, String ret) {
 		String query = "";
 		String queryFirstPart = "MATCH (p:Person) ";
 		String querySecondPart = "";
 		int i = 1;
 		for (Map.Entry<String, String> entry : parameterValues.entrySet()) {
-			if(entry.getValue() != "") {
+			if(! entry.getValue().equals("")) {
 				queryFirstPart += "MATCH (y" + i + ":" + entry.getKey() + " " +
 						          "{val: {" + entry.getKey().substring(0, 3).toLowerCase() + 
 						          entry.getKey().substring(3) +"Val}}) ";
@@ -248,10 +251,19 @@ public class YstrController {
 		}
 
 		query += queryFirstPart + querySecondPart;
-		if (count)
-		    query += "RETURN count(p)";
-		else
-		    query += "RETURN labels(p), p.ethnicity, count(*)";
+
+		switch (ret) {
+            case "count":
+                query += "RETURN count(p)";
+                break;
+            case "ethnicity":
+                query += "RETURN labels(p), p.ethnicity, count(*)";
+                break;
+            case "country":
+                query += "MATCH(c:Country) WHERE (c)-[]->(p) RETURN labels(c), c.name, count(*)";
+            default:
+                break;
+        }
 
 		return query;
 	}
@@ -265,19 +277,25 @@ public class YstrController {
 
 		List<Map<String, Object>> mapHaplotypes = IteratorUtils.toList(result.iterator());
 
-		Map<String, Integer> hapByEthnicity = new HashMap<>();
+		Map<String, Integer> haplotypes = new HashMap<>();
 		for (Map<String, Object> i : mapHaplotypes) {
-			String ethnicity = null;
+			String ethnicity = "";
+			String country = "";
 			for (Map.Entry<String, Object> entry : i.entrySet()) {
 		        if (entry.getKey().equals("p.ethnicity")) {
 		            ethnicity = entry.getValue().toString();
-                } else if (entry.getKey().equals("count(*)")) {
-		            hapByEthnicity.put(ethnicity, ((Long)entry.getValue()).intValue());
+                } else if (entry.getKey().equals("c.name"))
+                    country = entry.getValue().toString();
+                else if (entry.getKey().equals("count(*)")) {
+                    if (!ethnicity.equals(""))
+                        haplotypes.put(ethnicity, ((Long)entry.getValue()).intValue());
+                    else
+                        haplotypes.put(country, ((Long)entry.getValue()).intValue());
                 }
             }
         }
 
-		return hapByEthnicity;
+		return haplotypes;
 	}
 
     private int runNeoQueryCount(String query, Map<String, String> paramsQuery) {

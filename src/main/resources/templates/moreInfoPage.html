@@ -13,10 +13,10 @@
 <div class="row" layout:fragment="content" style="color: black;">
 
     <div class="col-lg-12" style="margin-left: 20px;">
-        <h2>Haplotypes By Ethnicity</h2>
-        <div class="col-md-8">
+        <div class="col-md-5">
+            <h3>Ethnicity</h3>
 
-            <table id="myTable">
+            <table id="ethnicityTable">
                 <thead>
                 <tr>
                     <th>Ethnicity</th>
@@ -27,6 +27,25 @@
                 <tr style="font-size: 15px;" th:each="ethnicity : ${hapByEthnicity}">
                     <td th:text="${ethnicity.key}">key</td>
                     <td th:text="${ethnicity.value}">value</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-5">
+            <h3>Country</h3>
+
+            <table id="countryTable">
+                <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="font-size: 15px;" th:each="country : ${hapByCountry}">
+                    <td th:text="${country.key}">key</td>
+                    <td th:text="${country.value}">value</td>
                 </tr>
                 </tbody>
             </table>

@@ -8,7 +8,12 @@ $(function() {
         });
     });
 
-    $(document).ready( function () {
-        $('#myTable').DataTable();
-    } );
+
+    $('#ethnicityTable').DataTable({
+        lengthChange: false
+    });
+    $('#countryTable').DataTable({
+        lengthChange: false
+    });
+
 });
